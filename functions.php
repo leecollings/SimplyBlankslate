@@ -17,6 +17,12 @@ function simplyblankslate_load_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'simplyblankslate_load_scripts' );
 
+// Reset CSS 
+function reset_style() {
+    printf( '<link rel="stylesheet" href="%s" />' . "\n", esc_url( get_template_directory_uri( 'url' ) ) . '/css/reset.min.css' );
+}
+add_action( 'wp_head', 'reset_style', 2 );
+
 function simplyblankslate_read_more_link() {
     if(!is_admin()) {
         return ' <a href="'.esc_url(get_permalink()).'" class="more-link">...</a>';
@@ -62,3 +68,9 @@ function simplyblankslate_comment_count($count) {
     }
 }
 add_filter('get_comments_number', 'simplyblankslate_comment_count', 0);
+
+// disable injected recent comments widget css. boilerplate theme doesn't need this.
+add_filter( 'show_recent_comments_widget_style', '__return_false', 99 );
+
+// remove windows live writer. no one uses this and it's discontinued
+remove_action('wp_head', 'wlwmanifest_link');
